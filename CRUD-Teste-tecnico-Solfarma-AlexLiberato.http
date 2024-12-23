@@ -1,0 +1,6 @@
+@CRUD_Teste_tecnico_Solfarma_AlexLiberato_HostAddress = http://localhost:5174
+
+GET {{CRUD_Teste_tecnico_Solfarma_AlexLiberato_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

@@ -1,0 +1,25 @@
+version: "3.9"
+services:
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: sqlserver
+    user: root
+    ports:
+      - "1433:1433"
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=StrongPassword123
+    volumes:
+      - ./scripts:/docker-entrypoint-initdb.d
+      - ./init-db.sh:/init-db.sh
+      - sqlserver_data:/var/opt/mssql
+    command: >
+      /bin/bash -c "apt-get update && apt-get install -y curl gnupg2 && \
+                    curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add - && \
+                    curl https://packages.microsoft.com/config/ubuntu/20.04/prod.list > /etc/apt/sources.list.d/mssql-release.list && \
+                    apt-get update && apt-get install -y msodbcsql18 && \
+                    /opt/mssql/bin/sqlservr & \
+                    sleep 30 && /init-db.sh && tail -f /dev/null"
+
+volumes:
+  sqlserver_data:
